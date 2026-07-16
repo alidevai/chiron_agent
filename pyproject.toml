@@ -1,5 +1,6 @@
-# Ajan platformunu pip ile kurulabilir yapar: `pip install -e .`
-# Sonucta 'ajan' komutu ve `python -m core` HER dizinden calisir; boylece
+# Chiron platformunu pip ile kurulabilir yapar: `pip install -e .`
+# Sonucta 'chiron' (ve eski adiyla 'ajan') komutu ve `python -m core` HER
+# dizinden calisir; boylece
 # Cursor/Windsurf/VS Code'da (Claude Code eklentisiyle) global kullanilabilir.
 #
 # Onemli: kurulum editable (-e) oldugundan platformun evi BU repo'dur; policies,
@@ -9,9 +10,9 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ajan-platform"
+name = "chiron-agent"
 version = "1.0.0"
-description = "Otonom uzmanlasan AI agent platformu: guvenli yetenek edinme + token-verimli ogrenme"
+description = "Chiron - autonomous, self-specializing AI agent platform: safe capability acquisition + token-efficient learning"
 requires-python = ">=3.10"
 dependencies = ["PyYAML>=6.0"]
 
@@ -19,6 +20,7 @@ dependencies = ["PyYAML>=6.0"]
 test = ["pytest>=7.0"]
 
 [project.scripts]
+chiron = "core.__main__:main"
 ajan = "core.__main__:main"
 
 [tool.setuptools]

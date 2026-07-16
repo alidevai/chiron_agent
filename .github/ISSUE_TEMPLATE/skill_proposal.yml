@@ -1,0 +1,49 @@
+name: 🧩 Skill proposal
+description: Propose a community skill (goes through the staging → scan → eval → review pipeline)
+title: "[skill] "
+labels: [skill-candidate]
+body:
+  - type: input
+    id: skill-id
+    attributes:
+      label: Skill id
+      placeholder: "kebab-case-id (e.g. sql-migration-safety)"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What does the skill do, and when should the agent invoke it?
+      description: This becomes the skill's `description` frontmatter — the agent auto-invokes based on it.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Primary sources
+      description: Official docs, standards, papers the procedure is based on (links).
+    validations:
+      required: true
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk level
+      options:
+        - low
+        - medium
+        - high (will require human approval per immutable-core)
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Candidate checklist
+      options:
+        - label: I placed the candidate under `contrib/skills/<id>/SKILL.md` (not `.claude/skills/`)
+          required: true
+        - label: "`python -m core scan contrib/skills/<id>` passes (no critical findings)"
+          required: true
+        - label: The skill requests no dangerous permissions (OAuth, broker, production, email)
+          required: true
+        - label: It does not duplicate an existing skill without clear improvement
+          required: true

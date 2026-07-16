@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/banner.svg" alt="AJAN — Autonomous, Self-Specializing AI Agent Platform" width="100%"/>
+<img src="docs/assets/banner.svg" alt="CHIRON — Autonomous, Self-Specializing AI Agent Platform" width="100%"/>
 
 <br/><br/>
 
@@ -15,7 +15,7 @@
 *An AI agent that measures its own competence gap, safely acquires the capabilities it lacks —*
 *sandbox-tested and policy-gated — and turns repeated, proven lessons into permanent skills.*
 
-[Features](#features) • [How It Works](#how-it-works) • [Installation](#installation) • [Usage](#usage) • [CLI](#cli-reference) • [Security](#security-model) • [License](#license)
+[Features](#features) • [How It Works](#how-it-works) • [Installation](#installation) • [Usage](#usage) • [CLI](#cli-reference) • [Security](#security-model) • [Contributing](#contributing) • [Contact](#contact) • [License](#license)
 
 </div>
 
@@ -23,7 +23,7 @@
 
 ## What is this?
 
-**AJAN** is a working system that makes an AI agent (Claude Code) apply **expert procedures** to every task, **notice its own missing capabilities**, discover skills/MCPs/tools from trusted sources, and add them to its own capability library in a controlled way — **tested in a sandbox** and **passed through policy gates**. Nothing found on the internet is ever installed directly.
+**Chiron** — named after the wise centaur of Greek myth who trained heroes — is a working system that makes an AI agent (Claude Code) apply **expert procedures** to every task, **notice its own missing capabilities**, discover skills/MCPs/tools from trusted sources, and add them to its own capability library in a controlled way — **tested in a sandbox** and **passed through policy gates**. Nothing found on the internet is ever installed directly.
 
 > **Core principle:** the agent is autonomous in research and sandbox testing; permanent installation, broad permissions, production changes and live trading are **deny-by-default** and approval-controlled.
 
@@ -128,8 +128,8 @@ flowchart LR
 ## Installation
 
 ```bash
-git clone https://github.com/holladevai/ajan_code.git
-cd ajan_code
+git clone https://github.com/holladevai/chiron.git
+cd chiron
 pip install -r requirements.txt
 python -m core init      # directories, policy seal, seed skill records
 python -m core verify    # audit chain + policy integrity
@@ -280,12 +280,25 @@ Agent working rules: [CLAUDE.md](CLAUDE.md).
 
 ## Contributing
 
-Issues and PRs are welcome. Please keep in mind:
+Issues and PRs are welcome — including **community-contributed skills**, which go through
+the same staging → scan → sandbox eval → review pipeline the platform itself uses.
+Every PR is automatically tested by CI (pytest + integrity checks + static security scan).
+
+See **[CONTRIBUTING.md](CONTRIBUTING.md)** for the full guide, and use the
+[issue templates](.github/ISSUE_TEMPLATE/) to report bugs, request features or propose skills.
+Security vulnerabilities: see [SECURITY.md](SECURITY.md).
+
+Ground rules:
 
 - **Ponytail philosophy:** no unnecessary code, dependencies or capabilities. If stdlib suffices, use stdlib.
 - **Security is exempt from minimalism** — never weaken scanning, policy gates, audit or the guard hook.
 - Run `pytest -q` and `python -m core verify` before submitting.
 - Changes to `policies/`, `core/guard_hook.py`, `core/policy.py`, `core/audit.py` require explicit maintainer sign-off (they are constitutionally protected).
+
+## Contact
+
+- 📧 **Email:** devaikaga@gmail.com
+- 📍 **Location:** Antalya, Türkiye 🇹🇷
 
 ## License
 

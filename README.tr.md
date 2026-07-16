@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/banner.svg" alt="AJAN — Otonom, Kendi Kendine Uzmanlaşan AI Agent Platformu" width="100%"/>
+<img src="docs/assets/banner.svg" alt="CHIRON — Otonom, Kendi Kendine Uzmanlaşan AI Agent Platformu" width="100%"/>
 
 <br/><br/>
 
@@ -14,7 +14,7 @@
 *Kendi yetkinlik açığını ölçen, eksik yeteneği güvenle edinen —*
 *sandbox'ta test edilmiş ve politika kapılı — tekrar eden kanıtlı dersleri kalıcı skill'e dönüştüren bir AI agent.*
 
-[Özellikler](#özellikler) • [Nasıl Çalışır](#nasıl-çalışır) • [Kurulum](#kurulum) • [Kullanım](#kullanım) • [CLI](#cli-referansı) • [Güvenlik](#güvenlik-modeli) • [Lisans](#lisans)
+[Özellikler](#özellikler) • [Nasıl Çalışır](#nasıl-çalışır) • [Kurulum](#kurulum) • [Kullanım](#kullanım) • [CLI](#cli-referansı) • [Güvenlik](#güvenlik-modeli) • [Katkı](#katkı) • [İletişim](#i̇letişim) • [Lisans](#lisans)
 
 </div>
 
@@ -22,7 +22,7 @@
 
 ## Bu nedir?
 
-**AJAN**, bir AI agent'ın (Claude Code) her görevde **uzman prosedürleri** uygulamasını, **eksik yeteneklerini kendisinin fark etmesini**, güvenilir kaynaklardan skill/MCP/tool bulmasını ve bunları **sandbox'ta test ederek**, **politika kapılarından geçirerek** kendi yetenek kütüphanesine kontrollü biçimde eklemesini sağlayan çalışır bir sistemdir. İnternetten bulunan hiçbir şey doğrudan kurulmaz.
+**Chiron** — adını Yunan mitolojisinde kahramanları eğiten bilge kentaurdan alır — bir AI agent'ın (Claude Code) her görevde **uzman prosedürleri** uygulamasını, **eksik yeteneklerini kendisinin fark etmesini**, güvenilir kaynaklardan skill/MCP/tool bulmasını ve bunları **sandbox'ta test ederek**, **politika kapılarından geçirerek** kendi yetenek kütüphanesine kontrollü biçimde eklemesini sağlayan çalışır bir sistemdir. İnternetten bulunan hiçbir şey doğrudan kurulmaz.
 
 > **Ana ilke:** Agent araştırmada ve sandbox testinde otonomdur; kalıcı kurulum, geniş yetki, production değişikliği ve canlı trading **deny-by-default** ve onay kontrollüdür.
 
@@ -127,8 +127,8 @@ flowchart LR
 ## Kurulum
 
 ```bash
-git clone https://github.com/holladevai/ajan_code.git
-cd ajan_code
+git clone https://github.com/holladevai/chiron.git
+cd chiron
 pip install -r requirements.txt
 python -m core init      # dizinler, politika mührü, seed skill kayıtları
 python -m core verify    # audit zinciri + politika bütünlüğü
@@ -278,12 +278,25 @@ Agent çalışma kuralları: [CLAUDE.md](CLAUDE.md).
 
 ## Katkı
 
-Issue ve PR'lar memnuniyetle karşılanır:
+Issue ve PR'lar memnuniyetle karşılanır — **topluluk katkısı skill'ler** dahil; bunlar
+platformun kendisinin kullandığı staging → tarama → sandbox eval → inceleme hattından geçer.
+Her PR, CI tarafından otomatik test edilir (pytest + bütünlük denetimi + statik güvenlik taraması).
+
+Tam rehber: **[CONTRIBUTING.md](CONTRIBUTING.md)** — hata bildirimi, özellik isteği ve skill
+önerisi için [issue şablonlarını](.github/ISSUE_TEMPLATE/) kullanın.
+Güvenlik açıkları: [SECURITY.md](SECURITY.md).
+
+Temel kurallar:
 
 - **Ponytail felsefesi:** gereksiz kod, bağımlılık veya yetenek yok. Stdlib yetiyorsa stdlib.
 - **Güvenlik minimalizmden muaftır** — tarama, politika kapıları, audit veya guard hook asla zayıflatılmaz.
 - Göndermeden önce `pytest -q` ve `python -m core verify` çalıştırın.
 - `policies/`, `core/guard_hook.py`, `core/policy.py`, `core/audit.py` değişiklikleri maintainer onayı gerektirir (anayasal korumalıdır).
+
+## İletişim
+
+- 📧 **E-posta:** devaikaga@gmail.com
+- 📍 **Konum:** Antalya, Türkiye 🇹🇷
 
 ## Lisans
 

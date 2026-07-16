@@ -1,0 +1,34 @@
+name: 💡 Feature request
+description: Propose an improvement to the platform
+title: "[feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: What gap does this fill? Why is it needed?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: ponytail
+    attributes:
+      label: Ponytail check (minimalism)
+      description: Why can't this be done with what already exists (stdlib, existing modules, an existing skill)?
+    validations:
+      required: true
+  - type: dropdown
+    id: security
+    attributes:
+      label: Does this touch security-critical surface?
+      options:
+        - "No"
+        - "Yes — scanner / policy / guard / audit / sandbox (requires maintainer sign-off)"
+    validations:
+      required: true

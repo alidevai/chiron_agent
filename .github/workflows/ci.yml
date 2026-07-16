@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  test:
+    name: tests (${{ matrix.os }}, py${{ matrix.python }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e .[test]
+      - run: pytest -q
+
+  integrity:
+    name: platform integrity (init + verify)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e .
+      - run: python -m core init
+      - run: python -m core verify
+
+  scan-skills:
+    name: static security scan (installed + staged skills)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e .
+      - name: Scan installed skills
+        run: |
+          set -e
+          for d in .claude/skills/*/; do
+            echo "== scanning $d"
+            python -m core scan "$d"
+          done
+      - name: Scan community skill candidates (contrib/)
+        run: |
+          set -e
+          shopt -s nullglob
+          found=0
+          for d in contrib/skills/*/; do
+            found=1
+            echo "== scanning candidate $d"
+            python -m core scan "$d"
+          done
+          [ "$found" = "1" ] || echo "no candidates"
