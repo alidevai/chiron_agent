@@ -24,6 +24,13 @@ Durum kalicidir (`.ajan_state.json`); varsayilan **aktif**. Elle: `python -m cor
 > false-positive yamasi icin **kullanici bir kez** `python scripts/setup_ajan.py`
 > calistirir (guard hook ve settings.json anayasal korumali oldugundan bunu insan yapar).
 
+## IDE'lerde ve her projede (global)
+
+Cursor / Windsurf / VS Code'da **Claude Code eklentisiyle** kullanilir (yerlesik
+Composer/Cascade degil). Global kurulum icin bir kez: `python scripts/install_global.py`
+(pip install -e . + ~/.claude'a skills/agents/hooks). Detay: [docs/IDE.md](docs/IDE.md).
+Platformun evi bu repo'dur; tum projeler ayni yetenek kutuphanesini/politikalari paylasir.
+
 ## Temel calisma kurali (HER gorevde)
 
 1. **Once yetkinlik acigini olc.** Gorev yuksek riskli (finans/trading/guvenlik),

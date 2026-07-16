@@ -246,6 +246,17 @@ def _ensure_ready(paths: Paths) -> None:
         pipe.close()
 
 
+def cmd_guard(args, paths: Paths) -> int:
+    """PreToolUse guard'i CLI uzerinden calistirir (cwd-bagimsiz, global hook icin).
+
+    guard_hook.main() stdin'i okur ve engellerse sys.exit(2) yapar; bu propagasyon
+    Claude Code'a araci bloklama sinyali verir.
+    """
+    from .guard_hook import main as guard_main
+    guard_main()  # sys.exit(0|2) — propagasyon kasitli
+    return 0
+
+
 def cmd_session_start(args, paths: Paths) -> int:
     from . import activate
     try:
@@ -423,6 +434,7 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("init", help="platformu baslat (dizinler, muhur, seed kayitlari)")
     sub.add_parser("seal-policy", help="[INSAN] immutable-core degisikligini muhurle")
+    sub.add_parser("guard", help="[HOOK] PreToolUse anayasal koruma (cwd-bagimsiz)")
     sub.add_parser("session-start", help="[HOOK] oturum baslangici: auto-init + protokol")
     sub.add_parser("on-prompt", help="[HOOK] prompt'ta 'ajan devreye gir' / 'is bitti' yakala")
     p = sub.add_parser("ajan", help="ajan durumunu ac/kapa/goster")
@@ -541,7 +553,7 @@ def main(argv: list[str] | None = None) -> int:
         "autoacquire-check": cmd_autoacquire_check,
         "autoacquire-promote": cmd_autoacquire_promote,
         "session-start": cmd_session_start, "on-prompt": cmd_on_prompt,
-        "ajan": cmd_ajan,
+        "ajan": cmd_ajan, "guard": cmd_guard,
     }
     return handlers[args.command](args, paths)
 

@@ -1,0 +1,25 @@
+# Ajan platformunu pip ile kurulabilir yapar: `pip install -e .`
+# Sonucta 'ajan' komutu ve `python -m core` HER dizinden calisir; boylece
+# Cursor/Windsurf/VS Code'da (Claude Code eklentisiyle) global kullanilabilir.
+#
+# Onemli: kurulum editable (-e) oldugundan platformun evi BU repo'dur; policies,
+# registry, audit merkezi olarak burada kalir (tek yetenek kutuphanesi).
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ajan-platform"
+version = "1.0.0"
+description = "Otonom uzmanlasan AI agent platformu: guvenli yetenek edinme + token-verimli ogrenme"
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=6.0"]
+
+[project.optional-dependencies]
+test = ["pytest>=7.0"]
+
+[project.scripts]
+ajan = "core.__main__:main"
+
+[tool.setuptools]
+packages = ["core"]
