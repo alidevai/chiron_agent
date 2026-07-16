@@ -20,7 +20,7 @@ uzerine kuruludur. Bu yuzden:
 ## Global kurulum (bir kez, insan calistirir)
 
 ```bash
-cd c:\Users\bilgi_islem\Desktop\ajan
+cd <ajan-repo-dizini>
 python scripts/install_global.py
 ```
 
