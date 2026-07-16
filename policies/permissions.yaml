@@ -1,0 +1,85 @@
+# =============================================================================
+# IZIN POLITIKASI - Capability edinme ve calistirma kurallari
+# Semantik: DENY-OVERRIDES
+#   1) immutable-core.yaml forbidden_actions -> kosulsuz DENY
+#   2) Eslesen kurallardan herhangi biri deny ise -> DENY
+#   3) Degilse herhangi biri require_approval ise -> REQUIRE_APPROVAL
+#   4) Degilse bir allow kurali eslesir VE kosullari saglanirsa -> ALLOW
+#      (kosul saglanmazsa fail-closed: DENY)
+#   5) Hicbir kural eslesmezse -> default_action (deny)
+# =============================================================================
+version: 1
+default_action: deny
+
+rules:
+  # --- Arastirma ve kesif: yuksek otonomi ---
+  - id: research
+    action: research
+    effect: allow
+
+  - id: download-to-staging
+    action: download_to_staging
+    effect: allow
+
+  # --- Aday hazirlama ---
+  - id: stage-capability
+    action: stage_capability
+    effect: allow
+    conditions: [security_scan_passed]
+
+  - id: sandbox-eval
+    action: sandbox_eval
+    effect: allow
+
+  - id: generate-skill
+    action: generate_skill
+    effect: allow          # uretilen skill her zaman experimental baslar
+
+  # --- Kalici kurulum: risk temelli ---
+  - id: install-low
+    action: install_capability
+    when: { risk_level: [low] }
+    effect: allow
+    conditions: [security_scan_passed, sandbox_eval_passed]
+
+  - id: install-medium-high
+    action: install_capability
+    when: { risk_level: [medium, high] }
+    effect: require_approval
+    conditions: [security_scan_passed, sandbox_eval_passed]
+
+  - id: install-critical
+    action: install_capability
+    when: { risk_level: [critical] }
+    effect: deny
+
+  # --- Geri alma / iptal: her zaman serbest (guvenli yon) ---
+  - id: revoke
+    action: revoke_capability
+    effect: allow
+
+  - id: rollback
+    action: rollback_capability
+    effect: allow
+
+  # --- Uretim sistemleri ---
+  - id: prod-write
+    action: production_write
+    effect: deny
+
+  - id: prod-deploy
+    action: production_deploy
+    effect: require_approval
+
+  - id: db-migration
+    action: database_migration_prod
+    effect: require_approval
+
+  # --- Dis dunyaya etki eden geri donussuz isler ---
+  - id: email
+    action: email_send
+    effect: require_approval
+
+  - id: oauth
+    action: oauth_grant
+    effect: require_approval

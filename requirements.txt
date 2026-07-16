@@ -1,0 +1,4 @@
+# Cekirdek yalnizca standart kutuphane + PyYAML ile calisir (ponytail: minimal bagimlilik).
+PyYAML>=6.0
+# Test icin:
+pytest>=7.0

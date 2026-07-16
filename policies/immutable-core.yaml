@@ -1,0 +1,51 @@
+# =============================================================================
+# ANAYASAL SINIRLAR (Constitutional Boundary)
+# Bu dosya agent tarafindan ASLA degistirilemez.
+# - core/guard_hook.py bu dosyaya yazma girisimlerini engeller.
+# - SHA256 ozeti immutable-core.sha256 dosyasinda tutulur; policy engine her
+#   calismada dogrular, uyusmazlikta sistem fail-closed calisir (her sey deny).
+# - Degisiklik yalnizca insan tarafindan, elle yapilir; ardindan
+#   `python -m core seal-policy` ile yeni ozet imzalanir.
+# =============================================================================
+version: 1
+description: >
+  Agent'in kendi basina asla yapamayacagi eylemler ve dokunamayacagi dosyalar.
+  Agent yalnizca degisiklik ONERISI olusturabilir; uygulama insana aittir.
+
+# Bu eylemler risk seviyesinden bagimsiz olarak her zaman DENY'dir.
+forbidden_actions:
+  - modify_policy                 # politika dosyalarini degistirme
+  - modify_security_rules         # guvenlik tarayici kurallarini gevsetme
+  - disable_audit                 # audit log'u kapatma/silme
+  - delete_audit_log
+  - modify_evaluator_thresholds   # eval minimum skorlarini dusurme
+  - self_modify_guard             # guard hook'u degistirme/devre disi birakma
+  - access_production_secrets     # production secret disari aktarma
+  - broker_withdrawal             # para cekme yetkisi
+  - unrestricted_live_trading     # limitsiz canli islem
+  - change_own_risk_limits        # agent'in kendi risk limitlerini degistirmesi
+  - push_main_direct              # ana branch'e dogrudan push
+  - delete_data_without_approval
+
+# Guard hook'un yazma islemlerine kapattigi yollar (proje kokune gore).
+protected_paths:
+  - policies/immutable-core.yaml
+  - policies/immutable-core.sha256
+  - policies/permissions.yaml
+  - policies/trading.yaml
+  - audit/audit.jsonl
+  - core/guard_hook.py
+  - core/policy.py
+  - core/audit.py
+  - .claude/settings.json
+
+# Risk seviyesi ne olursa olsun her zaman insan onayi gerektiren eylemler.
+human_approval_always:
+  - production_deploy
+  - database_migration_prod
+  - live_trade
+  - paper_trade
+  - email_send
+  - broad_filesystem_access
+  - oauth_grant
+  - install_capability_high_risk

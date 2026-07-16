@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "deny": [
+      "Write(./policies/**)",
+      "Edit(./policies/**)",
+      "Write(./audit/**)",
+      "Edit(./audit/**)",
+      "Write(./.claude/settings.json)",
+      "Edit(./.claude/settings.json)",
+      "Write(./core/guard_hook.py)",
+      "Edit(./core/guard_hook.py)",
+      "Write(./core/policy.py)",
+      "Edit(./core/policy.py)",
+      "Write(./core/audit.py)",
+      "Edit(./core/audit.py)"
+    ],
+    "allow": [
+      "Bash(python -m core gap:*)",
+      "Bash(python -m core scan:*)",
+      "Bash(python -m core list:*)",
+      "Bash(python -m core search:*)",
+      "Bash(python -m core stale:*)",
+      "Bash(python -m core verify)",
+      "Bash(python -m core report:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python core/guard_hook.py"
+          }
+        ]
+      }
+    ]
+  }
+}

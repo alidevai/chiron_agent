@@ -1,0 +1,29 @@
+# backtest-integrity skill icin eval spec ornegi.
+# Bu spec, "eval" komutunun hem dosya kontrolu hem sandbox komut kontrolu
+# yapabildigini gosterir.
+capability: backtest-integrity
+minimum_score: 0.9
+checks:
+  - name: skill_md_var
+    type: file_regex
+    file: SKILL.md
+    pattern: "look-ahead"
+    expect: present
+    critical: true
+
+  - name: frontmatter_risk_high
+    type: file_regex
+    file: SKILL.md
+    pattern: "risk_level:\\s*high"
+    expect: present
+
+  - name: guvenlik_taramasi
+    type: scanner
+    max_verdict: review
+    critical: true
+
+  - name: trading_guvenlik_hatti_anlatiliyor
+    type: file_regex
+    file: SKILL.md
+    pattern: "kill switch"
+    expect: present

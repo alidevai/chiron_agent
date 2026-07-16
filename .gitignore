@@ -1,0 +1,19 @@
+# Runtime durumu (uretilen; surumlenmez)
+registry/*.db
+registry/revoked/*
+audit/audit.jsonl
+sandbox/runs/*
+staging/skills/*
+approvals/pending/*
+approvals/decided/*
+policies/immutable-core.sha256
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# .keep dosyalarini koru
+!**/.keep

@@ -1,0 +1,49 @@
+# =============================================================================
+# TRADING POLITIKASI
+# Zorunlu hat: arastirma -> backtest -> bagimsiz audit -> OOS -> walk-forward
+#   -> maliyet/slippage -> paper trading -> risk limitleri -> INSAN ONAYI
+#   -> kucuk sermaye -> canli izleme + kill switch
+# withdrawal ve limit degisikligi immutable-core'da zaten kosulsuz DENY.
+# =============================================================================
+version: 1
+
+rules:
+  - id: t-research
+    action: trading_research
+    effect: allow
+
+  - id: t-backtest
+    action: backtest
+    effect: allow
+
+  - id: t-backtest-audit
+    action: backtest_audit
+    effect: allow
+
+  - id: t-paper
+    action: paper_trade
+    effect: require_approval
+
+  - id: t-live
+    action: live_trade
+    effect: require_approval
+    conditions: [backtest_audit_passed, oos_validated, paper_trade_completed, risk_limits_set]
+
+  - id: t-withdraw
+    action: withdrawal
+    effect: deny
+
+  - id: t-limits
+    action: change_risk_limits
+    effect: deny
+
+# Canli isleme gecilirse uygulanacak zorunlu limit sablonu (insan doldurur).
+live_trade_limits:
+  max_daily_loss_pct: 1.0
+  max_order_size_pct: 2.0
+  max_position_pct: 5.0
+  max_leverage: 1
+  api_key_withdrawal_enabled: false
+  api_key_ip_allowlist_required: true
+  kill_switch_manual: true
+  two_step_confirmation_for_critical_orders: true
