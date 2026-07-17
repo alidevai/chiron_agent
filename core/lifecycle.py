@@ -22,12 +22,12 @@ import shutil
 import time
 from pathlib import Path
 
-from .audit import AuditLog
 from . import autoacquire
+from .audit import AuditLog
 from .confidence import assess
 from .evals import run_eval
 from .paths import Paths
-from .policy import ALLOW, DENY, REQUIRE_APPROVAL, PolicyEngine
+from .policy import ALLOW, REQUIRE_APPROVAL, PolicyEngine
 from .registry import Registry, dir_content_hash
 from .scanner import scan_path
 

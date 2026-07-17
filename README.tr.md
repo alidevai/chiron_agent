@@ -6,7 +6,9 @@
 
 [![Lisans: PolyForm Noncommercial](https://img.shields.io/badge/Lisans-PolyForm_Noncommercial_1.0.0-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![Testler](https://img.shields.io/badge/testler-54_ge%C3%A7iyor-brightgreen.svg)](tests/)
+[![Testler](https://img.shields.io/badge/testler-127_ge%C3%A7iyor-brightgreen.svg)](tests/)
+[![Kapsam](https://img.shields.io/badge/kapsam-%2588-brightgreen.svg)](#test--kalite)
+[![Lint](https://img.shields.io/badge/lint-ruff-261230.svg?logo=ruff&logoColor=white)](https://docs.astral.sh/ruff/)
 [![Platform](https://img.shields.io/badge/%C3%BCzerinde_%C3%A7al%C4%B1%C5%9F%C4%B1r-Claude_Code-d97757.svg)](https://claude.com/claude-code)
 
 [English](README.md) | **Türkçe**
@@ -275,6 +277,27 @@ docs/               IDE / global kurulum dokümanı
 
 Tam tasarım dokümanı: [otonom_uzmanlasan_ai_agent_skills_mcp_mimarisi.md](otonom_uzmanlasan_ai_agent_skills_mcp_mimarisi.md).
 Agent çalışma kuralları: [CLAUDE.md](CLAUDE.md).
+
+## Test & Kalite
+
+Chiron güvenlik-kritik olduğu için test paketi mutlu-yol unit testlerinin ötesine geçer.
+Aşağıdakilerin tümü her push ve PR'da [CI](.github/workflows/ci.yml)'da, Linux/macOS/Windows ×
+Python 3.10–3.12 matrisinde çalışır:
+
+| Katman | Ne denetler |
+|---|---|
+| **127 test** (`pytest`) | unit + integration + **düşmanca (adversarial)** |
+| **Kapsam kapısı** (`coverage.py`) | `fail_under = %85` (şu an ~%88) |
+| **Düşmanca güvenlik testleri** | guard-hook atlatma, path-traversal, insan-only zorlama, scanner obfuscation/base64/sıfır-genişlik bypass, sandbox ağ-kesme & timeout & secret-sızıntısı, audit kurcalama/sıralama/silme |
+| **Bilinen-boşluk takibi** | gerçek sınırlar (regex-bypass, audit truncation/re-forge) `@pytest.mark.xfail(strict=True)` ile sabitlenir — motor gelişirse test döner ve güncelleme zorlar |
+| **Lint** (`ruff`) · **Güvenlik lint** (`bandit`) · **Bağımlılık CVE** (`pip-audit`) · **Secret** (`gitleaks`) | sıfır bulgu |
+| **Platform bütünlüğü** (`python -m core verify`) | hash-zincirli audit + mühürlü politika sağlam |
+
+Hepsini yerelde çalıştır: `make all` (ham komutlar için [CONTRIBUTING.md](CONTRIBUTING.md)).
+
+> Düşmanca test notu: anayasal korumalı modüller (`policy.py`, `guard_hook.py`, `audit.py`)
+> **test edilir, asla değiştirilmez** — testler mevcut garantileri kilitler ve henüz
+> yakalamadıklarını görünür kılar.
 
 ## Katkı
 

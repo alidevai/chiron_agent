@@ -5,14 +5,24 @@ on:
     branches: [master, main]
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: tests (${{ matrix.os }}, py${{ matrix.python }})
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         python: ["3.10", "3.12"]
+        include:
+          - os: ubuntu-latest
+            python: "3.11"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +30,45 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - run: pip install -e .[test]
-      - run: pytest -q
+      - run: python -m pytest
+
+  coverage:
+    name: coverage gate (fail-under 85)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e .[dev]
+      - run: python -m coverage run -m pytest
+      - run: python -m coverage report  # esik pyproject.toml [tool.coverage.report] fail_under
+
+  lint:
+    name: lint + type + security-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e .[dev]
+      - name: ruff (lint)
+        run: ruff check core tests scripts
+      - name: bandit (kendi kaynagimizin guvenlik lint'i)
+        run: bandit -c pyproject.toml -r core -q
+
+  deps-audit:
+    name: dependency CVE audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pip-audit
+      - name: pip-audit (runtime bagimliliklari)
+        run: pip-audit -r requirements.txt
 
   integrity:
     name: platform integrity (init + verify)
@@ -35,7 +83,7 @@ jobs:
       - run: python -m core verify
 
   scan-skills:
-    name: static security scan (installed + staged skills)
+    name: static security scan (installed + candidate skills)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

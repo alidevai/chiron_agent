@@ -18,6 +18,58 @@ dependencies = ["PyYAML>=6.0"]
 
 [project.optional-dependencies]
 test = ["pytest>=7.0"]
+# Kalite/guvenlik arac zinciri (ponytail: yalnizca net deger katanlar; ruff
+# tek basina flake8+isort+black+pyupgrade yerine gecer). Guvenlik/dogrulama
+# arac zinciri ponytail muafiyeti kapsamindadir (CLAUDE.md).
+dev = [
+    "pytest>=7.0",
+    "coverage>=7.0",
+    "ruff>=0.6",
+    "bandit[toml]>=1.7",
+    "pip-audit>=2.7",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --strict-config"
+xfail_strict = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+# E/F: pyflakes+pycodestyle, W: uyarilar, I: import sirasi, UP: pyupgrade, B: bugbear
+select = ["E", "F", "W", "I", "UP", "B"]
+# E501: uzun regex/aciklama satirlari bilincli; E741: tek-harf 'l' (anayasal
+# audit.py dahil birkac yerde, stilistik) — dusuk deger, gurultuyu onle.
+ignore = ["E501", "E741"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011"]
+
+[tool.coverage.run]
+source = ["core"]
+omit = ["core/__main__.py"]  # CLI dispatch; ayri e2e testleriyle kademeli kapsanacak
+
+[tool.coverage.report]
+# Baseline ~%88 (core, __main__ haric). Regresyonu engelleyecek esik; kademeli yukseltilir.
+fail_under = 85
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+]
+
+[tool.bandit]
+# Kendi Python kaynagimizi tarariz. Asagidaki bulgular incelenip gerekcelendirildi:
+#  B404/B603: sandbox.py subprocess KULLANIMI tasarim geregi (izole komut kosumu).
+#  B110 try/except/pass: bilincli fail-safe/fail-open desenleri (guard hook, audit).
+#  B105: audit GENESIS = "0"*64 sabiti; parola degil.
+#  B608: registry SQL tamamen parametreli (?), string enterpolasyonu yok — yanlis pozitif.
+exclude_dirs = ["tests", "sandbox", "staging", "contrib"]
+skips = ["B404", "B603", "B110", "B105", "B608"]
 
 [project.scripts]
 chiron = "core.__main__:main"

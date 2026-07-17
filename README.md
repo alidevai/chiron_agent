@@ -6,7 +6,10 @@
 
 [![License: PolyForm Noncommercial](https://img.shields.io/badge/License-PolyForm_Noncommercial_1.0.0-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-54_passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-127_passing-brightgreen.svg)](tests/)
+[![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen.svg)](#testing--quality)
+[![Lint](https://img.shields.io/badge/lint-ruff-261230.svg?logo=ruff&logoColor=white)](https://docs.astral.sh/ruff/)
+[![Security](https://img.shields.io/badge/security-bandit%20%2B%20pip--audit-yellow.svg)](SECURITY.md)
 [![Platform](https://img.shields.io/badge/runs_on-Claude_Code-d97757.svg)](https://claude.com/claude-code)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](#contributing)
 
@@ -285,6 +288,27 @@ docs/               IDE / global install docs
 The full design document (in Turkish) lives at
 [otonom_uzmanlasan_ai_agent_skills_mcp_mimarisi.md](otonom_uzmanlasan_ai_agent_skills_mcp_mimarisi.md).
 Agent working rules: [CLAUDE.md](CLAUDE.md).
+
+## Testing & Quality
+
+Chiron is security-critical, so its test suite goes beyond happy-path unit tests.
+Everything below runs in [CI](.github/workflows/ci.yml) on every push and PR, across
+Linux/macOS/Windows × Python 3.10–3.12:
+
+| Layer | What it checks |
+|---|---|
+| **127 tests** (`pytest`) | unit + integration + **adversarial** |
+| **Coverage gate** (`coverage.py`) | `fail_under = 85%` (currently ~88%) |
+| **Adversarial security tests** | guard-hook bypass, path-traversal, HUMAN-only enforcement, scanner obfuscation/base64/zero-width bypass, sandbox network-kill & timeout & secret-leak, audit tamper/reorder/deletion |
+| **Known-gap tracking** | genuine limitations (regex-bypass, audit truncation/re-forge) are pinned as `@pytest.mark.xfail(strict=True)` — if the engine improves, the test flips and forces an update |
+| **Lint** (`ruff`) · **Security lint** (`bandit`) · **Dep CVEs** (`pip-audit`) · **Secrets** (`gitleaks` pre-commit) | zero findings |
+| **Platform integrity** (`python -m core verify`) | hash-chained audit + sealed policy intact |
+
+Run it all locally: `make all` (or see [CONTRIBUTING.md](CONTRIBUTING.md) for the raw commands).
+
+> Note on adversarial tests: constitutionally protected modules (`policy.py`,
+> `guard_hook.py`, `audit.py`) are **tested, never modified** — the tests lock in their
+> current guarantees and expose what they don't yet catch.
 
 ## Contributing
 

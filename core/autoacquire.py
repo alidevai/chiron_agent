@@ -70,7 +70,7 @@ class Candidate:
     permissions: list[str] = field(default_factory=list)
 
     @classmethod
-    def from_dict(cls, d: dict) -> "Candidate":
+    def from_dict(cls, d: dict) -> Candidate:
         return cls(
             id=d.get("id", ""),
             source_url=d.get("source_url", ""),

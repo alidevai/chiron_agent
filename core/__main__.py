@@ -14,6 +14,7 @@ import json
 import sys
 from pathlib import Path
 
+from . import sandbox as sbx
 from .audit import AuditLog
 from .learning import LessonStore
 from .lifecycle import Pipeline
@@ -21,7 +22,6 @@ from .paths import Paths
 from .policy import PolicyEngine
 from .registry import dir_content_hash
 from .scanner import scan_path
-from . import sandbox as sbx
 
 
 def _print(data) -> None:

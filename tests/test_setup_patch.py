@@ -4,7 +4,6 @@ guard_hook.py'yi degistirmeden, yamanin uyguladigi _scrub_redirects davranisini
 ve command_touches_protected sonucunu gecici bir kopyada test eder.
 """
 import importlib.util
-import re
 from pathlib import Path
 
 import pytest

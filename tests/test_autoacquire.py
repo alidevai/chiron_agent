@@ -1,6 +1,7 @@
+from pathlib import Path
+
 from core.autoacquire import Candidate, evaluate, load_trust
 from core.lifecycle import Pipeline
-from pathlib import Path
 
 FIXTURES = Path(__file__).parent / "fixtures"
 

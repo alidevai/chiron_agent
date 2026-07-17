@@ -20,16 +20,44 @@ each with its own path. **English** below; [Türkçe özet](#türkçe-özet) at 
 ```bash
 git clone https://github.com/holladevai/chiron.git
 cd chiron
-pip install -e .[test]
+pip install -e .[dev]      # test + QA toolchain (ruff, bandit, coverage, pip-audit)
+pre-commit install         # local commit gate (optional but recommended)
 python -m core init
-pytest -q                 # all tests must pass
-python -m core verify     # audit chain + policy integrity
+make all                   # lint + coverage-gate + dep-audit + integrity
+```
+
+If `make` is unavailable (e.g. Windows), run the steps directly:
+
+```bash
+ruff check core tests scripts          # lint
+bandit -c pyproject.toml -r core -q    # security lint (our own source)
+python -m coverage run -m pytest       # tests
+python -m coverage report              # coverage gate (fail-under 85%)
+pip-audit -r requirements.txt          # dependency CVE audit
+python -m core verify                  # audit chain + policy integrity
 ```
 
 - Keep changes small and focused; one topic per PR.
-- Add or update tests for any behavior change (`tests/`).
-- Match the existing code style (stdlib-first, short modules, Turkish or English comments both fine).
+- **Add or update tests for any behavior change** (`tests/`). Coverage must stay ≥ 85%.
+- Security-critical modules (scanner, policy, guard hook, audit, sandbox) need
+  **adversarial tests**, not just happy-path — known bypass gaps are tracked as
+  `@pytest.mark.xfail(strict=True)` so improvements surface automatically.
+- Match the existing code style (stdlib-first, short modules; Turkish or English comments both fine).
+- `ruff`, `bandit`, `gitleaks` run on every commit via pre-commit and again in CI.
 - Fill in the PR template checklist.
+
+### Testing layers (what CI runs)
+
+| Layer | Tool | Gate |
+|---|---|---|
+| Unit + integration + adversarial | `pytest` | must pass on Linux/macOS/Windows × py3.10–3.12 |
+| Coverage | `coverage.py` | `fail_under = 85` |
+| Lint | `ruff` | zero warnings |
+| Security lint (our code) | `bandit` | zero findings (skips justified in `pyproject.toml`) |
+| Dependency CVEs | `pip-audit` | no known vulns in runtime deps |
+| Secret scan | `gitleaks` (pre-commit) | no leaked credentials |
+| Platform integrity | `python -m core verify` | audit chain + policy seal intact |
+| Skill static scan | `python -m core scan` | no critical findings |
 
 ## 2. Skill contributions (community skills)
 
