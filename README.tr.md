@@ -217,6 +217,7 @@ python -m core <komut> [--root DIZIN]
 | `request-human` | AI kendi **yapamayacağı** bir işi (altyapı, politika, prod dağıtım, tehlikeli izin) karta yazar; sohbette kaybolmaz, backlog'da kalıcı olur |
 | `providers` | Env'de anahtarı mevcut LLM sağlayıcıları (maskeli) → `solo`/`verify`/`council` modu |
 | `consult` | **AI kurulu** — Claude takılınca problemi *diğer* sağlayıcılara dağıtıp fikir alır (bkz. [docs/MULTI_MODEL.md](docs/MULTI_MODEL.md)) |
+| `github-search` | Bir iş için en uygun kütüphaneyi/aracı GitHub'da arar (yıldız, bakım, lisans) — `library-discovery` skill'i planlamada kullanır (ör. 3D için three.js) |
 | `learn recall/add/...` | Ders defteri (öğrenme) |
 
 ### Yan etkili, politika kapılı (agent kullanabilir)

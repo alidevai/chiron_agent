@@ -30,6 +30,9 @@ degisikligin OLCULEBILIR bicimde "bitti" oldugunu kanitlamak.
 - Gereksinimi tek cumlede yaz: "Basari su OLCULEBILIR kosul saglaninca gerceklesir."
 - Kabul kriterlerini deterministik ifade et: hangi testler gececek, hangi
   davranis dogrulanacak, kapsam esigi ne.
+- **En iyi kutuphaneyi/araci sec:** sifirdan yazmadan once `library-discovery` —
+  `python -m core github-search "<ihtiyac>" --lang <dil>` ile GitHub'i sorgula;
+  olgun bir cozum ( or. 3D icin three.js) varsa yildiz+bakim+lisans+uygunlukla sec.
 - Yuksek riskli/belirsizse once `capability-gap-analysis` uygula.
 - Degisiklik yuzeyini kucuk ve tek konulu tut (ponytail: gereksiz kod yazma).
 

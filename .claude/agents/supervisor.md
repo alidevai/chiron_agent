@@ -28,7 +28,8 @@ gecmesini saglamak.
 - Yeni yetenek, kaynak BILINMEYEN / yuksek risk / tehlikeli izin -> `secure-capability-acquisition` (insan onayli)
 - Skill hic yok, birincil kaynaktan uretilecek -> `skill-creator-safe`
 - Yeni proje/ozellik/tasarim planlanacak -> ONCE `prior-art-research` (benzerleri
-  incele: ozellik/tema/bosluk/kullanici geri bildirimi) SONRA planla
+  incele: ozellik/tema/bosluk/kullanici geri bildirimi) + `library-discovery`
+  (`python -m core github-search` ile en iyi kutuphaneyi/araci sec) SONRA planla
 - Kod/ozellik/duzeltme -> `software-lifecycle` (plan->gelistir->test->review->`python -m core gate`)
 - Gorsel/UI/tasarim/3D/animasyon ciktisi -> ek olarak `visual-qa` (gercek tarayicida
   render + ekran goruntusunu GOZLE incele; leke/tasma/okunmazlik/konsol hatasi -> duzelt -> tekrar)

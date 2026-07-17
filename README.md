@@ -227,6 +227,7 @@ python -m core <command> [--root DIR]
 | `request-human` | The agent files a task it *cannot* do itself (infra change, policy edit, prod deploy, dangerous permission) so it persists in the backlog instead of being lost in chat |
 | `providers` | List LLM providers whose API key is present in the env (masked) → `solo`/`verify`/`council` mode |
 | `consult` | **AI council** — when Claude is stuck, fan the problem out to the *other* providers for ideas/second opinions (see [docs/MULTI_MODEL.md](docs/MULTI_MODEL.md)) |
+| `github-search` | Query GitHub for the best-fit library/tool for a task (stars, maintenance, license) — the `library-discovery` skill uses this during planning (e.g. three.js for 3D) |
 | `learn recall/add/...` | Lesson ledger (learning) |
 
 ### Side effects, policy-gated (agent may use)

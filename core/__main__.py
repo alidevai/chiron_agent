@@ -16,6 +16,7 @@ from pathlib import Path
 
 from . import backlog as backlog_mod
 from . import council as council_mod
+from . import github_search as ghs_mod
 from . import kpi as kpi_mod
 from . import providers as providers_mod
 from . import quality_gate
@@ -260,6 +261,20 @@ def cmd_kpi(args, paths: Paths) -> int:
 def cmd_sbom(args, paths: Paths) -> int:
     """Yazilim malzeme listesi: bagimliliklar + kurulu yetenekler (hash/lisans)."""
     _print(sbom_mod.build_sbom(paths))
+    return 0
+
+
+def cmd_github_search(args, paths: Paths) -> int:
+    """GitHub'da aday kütüphane/repo arar (yıldız/bakım/lisans)."""
+    res = ghs_mod.search_repos(args.query, language=args.lang, sort=args.sort,
+                               limit=args.limit)
+    try:
+        AuditLog(paths.audit_log).append(
+            "agent", "github_search",
+            {"query": res.get("query"), "count": res.get("count", 0)})
+    except Exception:
+        pass
+    _print(res)
     return 0
 
 
@@ -603,6 +618,12 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("resolve-human", help="insan gorevini 'yapildi' olarak arsivle")
     p.add_argument("id")
 
+    p = sub.add_parser("github-search", help="GitHub'da aday kutuphane/repo ara (yildiz/bakim/lisans)")
+    p.add_argument("query")
+    p.add_argument("--lang", default="", help="dil filtresi (js, python, rust...)")
+    p.add_argument("--sort", default="stars", choices=["stars", "updated", "forks"])
+    p.add_argument("--limit", type=int, default=10)
+
     sub.add_parser("providers", help="env'de anahtari mevcut LLM saglayicilari (maskeli)")
 
     p = sub.add_parser("consult", help="takilinca diger modellerden fikir al (danisma kurulu)")
@@ -680,7 +701,7 @@ def main(argv: list[str] | None = None) -> int:
         "providers": cmd_providers, "consult": cmd_consult,
         "kpi": cmd_kpi, "sbom": cmd_sbom,
         "backlog": cmd_backlog, "request-human": cmd_request_human,
-        "resolve-human": cmd_resolve_human,
+        "resolve-human": cmd_resolve_human, "github-search": cmd_github_search,
         "sandbox-run": cmd_sandbox_run, "learn": cmd_learn,
         "autoacquire-check": cmd_autoacquire_check,
         "autoacquire-promote": cmd_autoacquire_promote,
