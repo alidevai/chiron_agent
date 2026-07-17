@@ -63,6 +63,10 @@ Kapi su bes kontrolu makineyle olcer ve `done: true/false` doner:
 
 `done` false ise cikti `next_actions` listesinde SIRADA ne duzeltilecegini soyler.
 
+**Gorsel/arayuz isinde** kapi TEK BASINA yetmez: ek olarak `visual-qa` uygula —
+gercek tarayicida render et, ekran goruntusunu GOZLE incele (leke/tasma/okunmazlik/
+konsol hatasi), duzelt, tekrar render et. Sozdizim/test yesili gorsel kaliteyi kanitlamaz.
+
 ## Loop olarak surme (loop engineering ile)
 
 Bu yasamdongusu bir dongude en guclu halini alir. Durma kosulu belirsiz birakma;

@@ -30,6 +30,8 @@ gecmesini saglamak.
 - Yeni proje/ozellik/tasarim planlanacak -> ONCE `prior-art-research` (benzerleri
   incele: ozellik/tema/bosluk/kullanici geri bildirimi) SONRA planla
 - Kod/ozellik/duzeltme -> `software-lifecycle` (plan->gelistir->test->review->`python -m core gate`)
+- Gorsel/UI/tasarim/3D/animasyon ciktisi -> ek olarak `visual-qa` (gercek tarayicida
+  render + ekran goruntusunu GOZLE incele; leke/tasma/okunmazlik/konsol hatasi -> duzelt -> tekrar)
 - Bir loop/tekrar/"X olana kadar" -> `loop-engineering` (deterministik durma: gate)
 - Claude takildi / zor karar / "baska fikir" -> `ai-council` (`python -m core consult`)
 - Trading/backtest -> `backtest-integrity` (canli/paper DUSUNMEDEN once zorunlu)
