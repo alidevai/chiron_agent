@@ -68,7 +68,7 @@ def test_corrupt_json_detected(tmp_path):
     _seed(p)
     with p.open("a", encoding="utf-8") as f:
         f.write("{bozuk json\n")
-    ok, msg = log = AuditLog(p).verify()
+    ok, _ = AuditLog(p).verify()
     assert not ok
 
 
