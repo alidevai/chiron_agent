@@ -14,6 +14,7 @@ import json
 import sys
 from pathlib import Path
 
+from . import backlog as backlog_mod
 from . import council as council_mod
 from . import kpi as kpi_mod
 from . import providers as providers_mod
@@ -259,6 +260,39 @@ def cmd_kpi(args, paths: Paths) -> int:
 def cmd_sbom(args, paths: Paths) -> int:
     """Yazilim malzeme listesi: bagimliliklar + kurulu yetenekler (hash/lisans)."""
     _print(sbom_mod.build_sbom(paths))
+    return 0
+
+
+def cmd_backlog(args, paths: Paths) -> int:
+    """Insan gorev kuyrugu: insanin yapmasi gereken her seyi tek yerde sunar."""
+    data = backlog_mod.write_backlog(paths)
+    _print(data)
+    print(f"\n[insan konsolu] {data['backlog_file']} yazildi.", file=sys.stderr)
+    return 0
+
+
+def cmd_request_human(args, paths: Paths) -> int:
+    """AI'in insana birakmasi gereken bir isi kalici karta yazar."""
+    card = backlog_mod.request_human(
+        paths, args.title, category=args.category, why=args.why,
+        action=args.action, risk=args.risk)
+    try:
+        AuditLog(paths.audit_log).append(
+            "agent", "human_task_filed",
+            {"id": card["id"], "category": card["category"], "risk": card["risk"]})
+    except Exception:
+        pass
+    _print(card)
+    return 0
+
+
+def cmd_resolve_human(args, paths: Paths) -> int:
+    """Bir insan gorevini 'yapildi' olarak arsivler."""
+    ok = backlog_mod.resolve(paths, args.id)
+    if not ok:
+        print(f"insan gorevi bulunamadi: {args.id}", file=sys.stderr)
+        return 1
+    print(f"cozuldu: {args.id}")
     return 0
 
 
@@ -558,6 +592,17 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("kpi", help="operasyonel KPI raporu (audit+registry+ogrenme)")
     sub.add_parser("sbom", help="yazilim malzeme listesi (bagimliliklar + kurulu yetenekler)")
 
+    sub.add_parser("backlog", help="insan gorev kuyrugu: insanin yapmasi gereken her sey")
+    p = sub.add_parser("request-human", help="AI: insana birakilacak isi karta yaz")
+    p.add_argument("title")
+    p.add_argument("--category", default="other",
+                   choices=list(backlog_mod.CATEGORIES))
+    p.add_argument("--why", default="")
+    p.add_argument("--action", default="")
+    p.add_argument("--risk", default="medium", choices=["low", "medium", "high", "critical"])
+    p = sub.add_parser("resolve-human", help="insan gorevini 'yapildi' olarak arsivle")
+    p.add_argument("id")
+
     sub.add_parser("providers", help="env'de anahtari mevcut LLM saglayicilari (maskeli)")
 
     p = sub.add_parser("consult", help="takilinca diger modellerden fikir al (danisma kurulu)")
@@ -634,6 +679,8 @@ def main(argv: list[str] | None = None) -> int:
         "verify": cmd_verify, "gate": cmd_gate, "report": cmd_report,
         "providers": cmd_providers, "consult": cmd_consult,
         "kpi": cmd_kpi, "sbom": cmd_sbom,
+        "backlog": cmd_backlog, "request-human": cmd_request_human,
+        "resolve-human": cmd_resolve_human,
         "sandbox-run": cmd_sandbox_run, "learn": cmd_learn,
         "autoacquire-check": cmd_autoacquire_check,
         "autoacquire-promote": cmd_autoacquire_promote,

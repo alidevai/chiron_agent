@@ -8,6 +8,9 @@ sandbox/runs/*
 staging/skills/*
 approvals/pending/*
 approvals/decided/*
+human/pending/*
+human/decided/*
+human/BACKLOG.md
 policies/immutable-core.sha256
 
 # Python

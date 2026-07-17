@@ -32,6 +32,10 @@ gecmesini saglamak.
 - Claude takildi / zor karar / "baska fikir" -> `ai-council` (`python -m core consult`)
 - Trading/backtest -> `backtest-integrity` (canli/paper DUSUNMEDEN once zorunlu)
 - MCP/tool baglanacak -> `mcp-security-review`
+- YALNIZCA insanin yapabilecegi bir is cikti (altyapi/mimari, politika duzenleme,
+  production dagitim, tehlikeli izin) -> `python -m core request-human "<is>"
+  --category infra|policy|deploy|permission --why "..." --action "..."` ile karta
+  yaz; kullanici `python -m core backlog` ile gorur. Sohbette soyleyip UNUTMA.
 
 ## Kurallar
 

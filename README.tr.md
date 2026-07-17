@@ -213,6 +213,8 @@ python -m core <komut> [--root DIZIN]
 | `gate` | **Deterministik Definition-of-Done** — test + kapsam + lint + güvenlik + bütünlük → `done: true/false` (loop durma koşulu, bkz. [docs/LOOPS.md](docs/LOOPS.md)) |
 | `kpi` | Audit + registry + derslerden türetilen operasyonel KPI'lar (yetenek envanteri, edinme hunisi, red/iptal oranları, guard-blok etkinliği, öğrenme yeniden-kullanımı) |
 | `sbom` | Yazılım Malzeme Listesi — bağımlılıklar + kurulu yetenekler (içerik hash'i, tarama skoru, köken) |
+| `backlog` | **İnsan operatör konsolu** — yalnızca insanın yapabileceği her şeyi tek listede sunar: yetenek onayları, AI'ın bildirdiği insan işleri, stale doğrulamalar, bilinçli ertelenen altyapı/mimari. `human/BACKLOG.md` yazar |
+| `request-human` | AI kendi **yapamayacağı** bir işi (altyapı, politika, prod dağıtım, tehlikeli izin) karta yazar; sohbette kaybolmaz, backlog'da kalıcı olur |
 | `providers` | Env'de anahtarı mevcut LLM sağlayıcıları (maskeli) → `solo`/`verify`/`council` modu |
 | `consult` | **AI kurulu** — Claude takılınca problemi *diğer* sağlayıcılara dağıtıp fikir alır (bkz. [docs/MULTI_MODEL.md](docs/MULTI_MODEL.md)) |
 | `learn recall/add/...` | Ders defteri (öğrenme) |

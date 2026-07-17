@@ -64,6 +64,18 @@ class Paths:
     def approvals_decided(self) -> Path:
         return self.root / "approvals" / "decided"
 
+    @property
+    def human_pending(self) -> Path:
+        return self.root / "human" / "pending"
+
+    @property
+    def human_decided(self) -> Path:
+        return self.root / "human" / "decided"
+
+    @property
+    def human_backlog(self) -> Path:
+        return self.root / "human" / "BACKLOG.md"
+
     def ensure(self) -> None:
         for p in [
             self.policies,
@@ -76,5 +88,7 @@ class Paths:
             self.evals_dir,
             self.approvals_pending,
             self.approvals_decided,
+            self.human_pending,
+            self.human_decided,
         ]:
             p.mkdir(parents=True, exist_ok=True)

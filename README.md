@@ -223,6 +223,8 @@ python -m core <command> [--root DIR]
 | `gate` | **Deterministic Definition-of-Done** — tests + coverage + lint + security + integrity → `done: true/false` (the loop stop condition, see [docs/LOOPS.md](docs/LOOPS.md)) |
 | `kpi` | Operational KPIs derived from the audit log + registry + lessons (capability inventory, acquisition funnel, reject/revoke rates, guard-block activity, learning reuse) |
 | `sbom` | Software Bill of Materials — dependencies + installed capabilities with content hashes, scan scores and provenance |
+| `backlog` | **Human operator console** — one prioritized list of everything only a human can do: capability approvals, agent-filed human tasks, stale revalidations, deliberately-deferred infra/architecture. Writes `human/BACKLOG.md` |
+| `request-human` | The agent files a task it *cannot* do itself (infra change, policy edit, prod deploy, dangerous permission) so it persists in the backlog instead of being lost in chat |
 | `providers` | List LLM providers whose API key is present in the env (masked) → `solo`/`verify`/`council` mode |
 | `consult` | **AI council** — when Claude is stuck, fan the problem out to the *other* providers for ideas/second opinions (see [docs/MULTI_MODEL.md](docs/MULTI_MODEL.md)) |
 | `learn recall/add/...` | Lesson ledger (learning) |
