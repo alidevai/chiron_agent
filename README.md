@@ -156,14 +156,22 @@ This repo is the platform's home; all projects share the same capability library
 
 ### Automatic activation
 
-The system activates itself in every Claude Code session (a `SessionStart` hook injects the working protocol). It can also be toggled from the prompt:
+The system activates itself in every Claude Code session (a `SessionStart` hook injects the working protocol). It can also be toggled from the prompt. The prompt triggers are **literal Turkish phrases** matched by the hook — type them verbatim (or use the language-neutral CLI below):
 
-| Prompt command | Effect |
-|---|---|
-| `ajan devreye gir` / `/ajan` | Enable the protocol |
-| `is bitti` / `ajan dur` | Disable for this session |
+| Prompt trigger (Turkish, literal) | Meaning | Effect |
+|---|---|---|
+| `ajan devreye gir` / `/ajan` | "agent, engage" | Enable the protocol |
+| `is bitti` / `ajan dur` | "job's done" / "agent, stop" | Disable for this session |
 
-State is persistent (`.ajan_state.json`); default is **on**. Manual control: `python -m core ajan on|off|status`.
+Language-neutral equivalent (recommended in English workflows):
+
+```bash
+python -m core ajan on        # enable
+python -m core ajan off       # disable
+python -m core ajan status    # show state
+```
+
+State is persistent (`.ajan_state.json`); default is **on**.
 
 ### Typical scenarios
 
